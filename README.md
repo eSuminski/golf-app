@@ -1,59 +1,93 @@
-# GolfApp
+# Golf Tournament Team Assignment App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+A web application for tournament organizers to efficiently assign golf participants into teams and export the results to CSV.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+This app helps tournament organizers:
 
-```bash
-ng serve
-```
+- **Upload** participant data from Word, Excel, CSV, or PDF documents
+- **Extract** text and organize names into structured data
+- **Assign** participants to teams via drag-and-drop interface
+- **Export** the final team assignments to CSV format
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Features
 
-## Code scaffolding
+- ✅ Document upload with drag-and-drop
+- ✅ Text extraction from Word, Excel, CSV, and PDF files
+- ✅ Excel-like data entry for name entry (First/Last name)
+- ✅ Team assignment with drag-and-drop
+- ✅ Dynamic theming based on file type (blue for Word, green for Excel, red for PDF)
+- ✅ Dark mode support
+- ✅ Responsive design (mobile to desktop)
+- ✅ CSV export with team assignments
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Tech Stack
 
-```bash
-ng generate component component-name
-```
+- **Angular 21.2.3** - Web framework
+- **Angular Material** - UI components
+- **TypeScript** - Type-safe development
+- **Vitest** - Testing framework
+- **PapaParse** - CSV parsing
+- **PDF.js** - PDF text extraction
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Getting Started
 
-```bash
-ng generate --help
-```
+### Prerequisites
 
-## Building
+- Node.js (v18 or higher)
+- npm (v11 or higher)
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Installation
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Development Server
 
-## Additional Resources
+```bash
+npm start
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The application will be available at `http://localhost:4200/`
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The build artifacts will be in the `dist/golf-app/` directory.
+
+### Running Tests
+
+```bash
+npm test
+```
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── app.ts              # Root component
+│   ├── app.config.ts       # App configuration
+│   ├── app.routes.ts       # Router configuration
+│   └── features/
+│       ├── upload/         # File upload component
+│       ├── data-entry/     # Participant data entry
+│       ├── team-assignment/ # Team assignment
+│       └── export/         # CSV export
+├── styles.css              # Global styles and themes
+└── main.ts                 # App entry point
+```
+
+## Documentation
+
+- **Agent Instructions** - See `.github/copilot-instructions.md` for AI development guidelines
+- **Architecture Documentation** - See `.opencode/` for detailed architecture specifications
+
+## License
+
+Private - golf-app
