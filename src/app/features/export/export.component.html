@@ -1,0 +1,31 @@
+<div class="export-container">
+  <h1>Export</h1>
+  <p>Export your team assignments to CSV</p>
+
+  <div class="preview-container">
+    <h3>CSV Preview</h3>
+    <table class="preview-table">
+      <thead>
+        <tr>
+          <th>Team Name</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of exportData(); track $index) {
+          <tr>
+            <td>{{ row.teamName }}</td>
+            <td>{{ row.firstName }}</td>
+            <td>{{ row.lastName }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="actions">
+    <button (click)="exportCSV()">Download CSV</button>
+    <button (click)="goToUpload()">Back to Upload</button>
+  </div>
+</div>

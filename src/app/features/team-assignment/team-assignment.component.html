@@ -1,0 +1,31 @@
+<div class="team-assignment-container">
+  <h1>Team Assignment</h1>
+  <p>Drag participants to their teams</p>
+
+  <div class="teams-container">
+    @for (team of teams(); track team.id) {
+      <div class="team">
+        <div class="team-header">
+          <input
+            type="text"
+            [(ngModel)]="team.name"
+            placeholder="Team Name"
+            class="team-name-input"
+          />
+          <button (click)="addParticipantToTeam(team.id)" class="add-participant-btn">
+            + Add Participant
+          </button>
+        </div>
+        <div class="team-participants">
+          @for (p of team.participants; track p.id) {
+            <div class="participant">{{ p.firstName }} {{ p.lastName }}</div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="actions">
+    <button (click)="goToExport()">Next: Export</button>
+  </div>
+</div>

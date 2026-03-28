@@ -1,0 +1,17 @@
+<div class="upload-container">
+  <h1>Upload Tournament Documents</h1>
+  <p>Drag and drop Word, Excel, CSV, or PDF files to extract participant data</p>
+
+  <div class="drop-zone">Drag files here or click to select</div>
+
+  @if (uploadedFiles().length > 0) {
+    <div class="file-list">
+      <h3>Uploaded Files</h3>
+      <ul>
+        @for (file of uploadedFiles(); track file.name) {
+          <li>{{ file.name }} ({{ file.type }})</li>
+        }
+      </ul>
+    </div>
+  }
+</div>
