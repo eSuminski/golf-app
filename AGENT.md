@@ -17,6 +17,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
 - Use `NgOptimizedImage` for all static images.
   - `NgOptimizedImage` does not work for inline base64 images.
+- Use `npm run ng` to access and utilize the angular cli
+- Use the angular cli for creating new resources when possible
+## Code Organization
+- group resources by feature when possible, otherwise group by resource type
 ## Accessibility Requirements
 - It MUST pass all AXE checks.
 - It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
