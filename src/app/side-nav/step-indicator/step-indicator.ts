@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-step-indicator',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './step-indicator.html',
   styleUrl: './step-indicator.css',
 })
-export class StepIndicator {}
+export class StepIndicator {
+  @Input() phaseName = '';
+}
