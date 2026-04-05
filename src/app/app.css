@@ -1,13 +1,52 @@
-.app-container {
+.full-height {
+  height: 100vh;
+}
+
+app-root {
   display: flex;
   height: 100vh;
 }
 
-.app-sidebar {
-  width: 20%;
+.content-with-header {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #1976d2;
+  color: white;
+  min-height: 64px;
+}
+
+.toggle-fab {
+  position: static;
+  margin-right: 16px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
 }
 
 .main-content {
   flex: 1;
   overflow: auto;
+}
+
+app-root {
+  display: flex;
+  height: 100vh;
+}
+
+.toggle-fab {
+  /* top: 16px;
+  left: 16px; */
+  z-index: 1000;
 }

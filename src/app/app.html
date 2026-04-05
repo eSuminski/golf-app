@@ -1,8 +1,20 @@
-<div class="app-container">
-  <div class="app-sidebar">
-    <app-side-nav></app-side-nav>
-  </div>
-  <div class="main-content">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+<mat-sidenav-container class="full-height">
+  <mat-sidenav #sidenav mode="push" [opened]="true">
+    <mat-stepper orientation="vertical">
+      <mat-step label="Step 1"></mat-step>
+      <mat-step label="Step 2"></mat-step>
+      <mat-step label="Step 3"></mat-step>
+    </mat-stepper>
+  </mat-sidenav>
+  <mat-sidenav-content class="content-with-header">
+    <header class="app-header">
+      <button mat-mini-fab color="primary" class="toggle-fab" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1 class="app-title">{{ title() }}</h1>
+    </header>
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
