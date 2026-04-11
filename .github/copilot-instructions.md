@@ -1,55 +1,50 @@
+You are an expert in TypeScript, Angular, and scalable web application development.
 
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+## Angular v21 Requirements
 
-## TypeScript Best Practices
-
-- Use strict type checking
-- Prefer type inference when the type is obvious
-- Avoid the `any` type; use `unknown` when type is uncertain
-
-## Angular Best Practices
-
-- Always use standalone components over NgModules
-- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
-- Use signals for state management
-- Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
-- Use `NgOptimizedImage` for all static images.
-  - `NgOptimizedImage` does not work for inline base64 images.
-
-## Accessibility Requirements
-
-- It MUST pass all AXE checks.
-- It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
-
-### Components
-
-- Keep components small and focused on a single responsibility
-- Use `input()` and `output()` functions instead of decorators
-- Use `computed()` for derived state
-- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
-- Prefer inline templates for small components
-- Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
-- When using external templates/styles, use paths relative to the component TS file.
-
-## State Management
-
-- Use signals for local component state
-- Use `computed()` for derived state
-- Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
+- Always use standalone components (no NgModules)
+- Do NOT set `standalone: true` in decorators (default in v20+)
+- Use `input()`/`output()` instead of decorators
+- Use `inject()` for DI (no constructor injection)
+- Set `changeDetection: OnPush` in `@Component`
+- Use signals: `signal()`, `computed()`, `effect()`
 
 ## Templates
 
-- Keep templates simple and avoid complex logic
-- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
-- Use the async pipe to handle observables
-- Do not assume globals like (`new Date()`) are available.
+- Use native control flow: `@if`, `@for`, `@switch`
+- Do NOT use `*ngIf`, `*ngFor`, `*ngSwitch`
+- Use `class`/`style` bindings (no `ngClass`/`ngStyle`)
 
-## Services
+## Material UI
 
-- Design services around a single responsibility
-- Use the `providedIn: 'root'` option for singleton services
-- Use the `inject()` function instead of constructor injection
+- Explicit import only (no barrel imports)
+- MDC-only components
+- Do NOT use `@angular/material` barrel or `MaterialModule`
+
+## State & Forms
+
+- Use signals for local state (pure transformations)
+- Use reactive forms
+- No `asyncPipe` on signals
+- No observable local state
+
+## Accessibility
+
+- Pass all AXE checks
+- Follow WCAG AA minimums (focus, color contrast, ARIA)
+
+## Routing
+
+- Use `provideRouter`
+- Lazy load with `loadComponent`
+
+## Testing
+
+- Use `standaloneTestBed`
+- Use `provideHttpClientTesting`
+
+## TypeScript
+
+- Strict mode
+- Type inference when obvious
+- Use `unknown` (never `any`)
