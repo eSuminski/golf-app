@@ -1,0 +1,45 @@
+.full-height {
+  height: 100vh;
+}
+
+app-root {
+  display: flex;
+  height: 100vh;
+}
+
+.content-with-header {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #1976d2;
+  color: white;
+  min-height: 4rem;
+}
+
+.toggle-fab {
+  position: static;
+  margin-right: 1rem;
+}
+
+.sidenav-content {
+  height: 35vh;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+}
+
+.main-content {
+  flex: 1;
+  overflow: auto;
+}

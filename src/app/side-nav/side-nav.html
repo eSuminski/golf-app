@@ -1,0 +1,7 @@
+<div class="side-nav">
+  <div class="nav-section">
+    @for (phase of phases; track $index) {
+      <app-step-indicator [phaseName]="phase"></app-step-indicator>
+    }
+  </div>
+</div>
