@@ -27,6 +27,10 @@ app-root {
   margin-right: 1rem;
 }
 
+.sidenav-content {
+  height: 35vh;
+}
+
 .app-title {
   margin: 0;
   font-size: 1.25rem;
