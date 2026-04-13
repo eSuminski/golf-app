@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SideNav } from './side-nav/side-nav';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [RouterOutlet, MatSidenavModule, MatStepperModule, MatButtonModule, MatIconModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
   protected readonly title = signal('golf-app');
