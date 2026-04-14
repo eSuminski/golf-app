@@ -31,3 +31,34 @@
 
 - Normalize/base styles if needed
 - CSS variables for colors/tokens
+
+### UPLOAD WORK
+Required Updates
+1. upload.ts - Component Logic
+- Add file drag & drop event handlers
+- Add file input click handler
+- Add dragover/preventDefault to enable drop
+- Track file selection state
+2. upload.html - Template
+- Drop zone area with visual feedback
+- File input element (hidden or styled)
+- Upload button/click area
+- Selected file display
+- Use Angular Material components
+3. upload.css - Styles
+- Drop zone styling with borders
+- Hover states for drag-over
+- File preview container
+- Upload button styling
+Suggested Material Components
+- mat-card for drop zone container
+- mat-button for upload trigger
+- mat-icon for file/upload icons
+- mat-progress-spinner (for future async state)
+- mat-chip or simple text for file name display
+UI Elements Needed
+1. Drop zone (card/div that accepts drops)
+2. "Click to upload" link/button
+3. Icon (upload/document icon)
+4. Selected file display area
+5. Visual feedback on drag-over
