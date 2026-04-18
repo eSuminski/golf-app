@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Organize } from './organize/organize';
+import { Organize } from './organize';
 
 describe('Organize', () => {
   let component: Organize;

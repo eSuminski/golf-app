@@ -44,7 +44,6 @@
   },
   "required": {
     "component": {
-      "standalone": true,
       "importsArray": true,
       "changeDetection": "OnPush",
       "useInject": true,

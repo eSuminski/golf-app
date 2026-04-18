@@ -3,8 +3,10 @@
 }
 
 app-root {
-  display: flex;
+  display: block;
   height: 100vh;
+  background-color: var(--app-bg);
+  transition: background-color 0.8s ease-in-out;
 }
 
 .content-with-header {
@@ -16,30 +18,52 @@ app-root {
 .app-header {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  background: #1976d2;
-  color: white;
+  padding: 0 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #1e293b;
   min-height: 4rem;
+  border-bottom: 2px solid var(--accent-color);
+  transition: border-color 0.8s ease-in-out, background 0.8s ease-in-out;
 }
 
-.toggle-fab {
-  position: static;
-  margin-right: 1rem;
+.app-header button[mat-icon-button] {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.sidenav-content {
-  height: 35vh;
+.header-spacer {
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.app-header button[mat-icon-button]:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .app-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.03rem;
   flex: 1;
   text-align: center;
+  color: #1e293b;
 }
 
 .main-content {
   flex: 1;
   overflow: auto;
+}
+
+.sidenav-content {
+  width: 250px;
 }
