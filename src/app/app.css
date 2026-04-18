@@ -35,10 +35,12 @@ app-root {
 
 .app-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.03rem;
   flex: 1;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .main-content {
