@@ -3,7 +3,7 @@
 }
 
 app-root {
-  display: flex;
+  display: block;
   height: 100vh;
 }
 
@@ -16,19 +16,10 @@ app-root {
 .app-header {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 0 1rem;
   background: #1976d2;
   color: white;
   min-height: 4rem;
-}
-
-.toggle-fab {
-  position: static;
-  margin-right: 1rem;
-}
-
-.sidenav-content {
-  height: 35vh;
 }
 
 .app-title {
@@ -42,4 +33,8 @@ app-root {
 .main-content {
   flex: 1;
   overflow: auto;
+}
+
+.sidenav-content {
+  width: 250px;
 }

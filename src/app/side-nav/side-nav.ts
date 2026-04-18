@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { StepIndicator } from './step-indicator/step-indicator';
 
 @Component({
