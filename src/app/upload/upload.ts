@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ThemeService } from '../core/services/theme.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Upload {
   private themeService = inject(ThemeService);
