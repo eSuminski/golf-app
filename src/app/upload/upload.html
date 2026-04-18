@@ -1,1 +1,13 @@
-<p>upload works!</p>
+<div class="upload-container">
+  <h2>Upload Document</h2>
+  <p>Select a PDF, Excel, or Word document to begin the organization process.</p>
+  
+  <div class="upload-box">
+    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".pdf,.xls,.xlsx,.csv,.doc,.docx">
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      <mat-icon>upload</mat-icon>
+      Choose File
+    </button>
+    <p class="file-hint">Supported: PDF, Excel, Word</p>
+  </div>
+</div>
