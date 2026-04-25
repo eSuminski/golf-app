@@ -1,0 +1,23 @@
+:host {
+  display: inline;
+}
+
+.word {
+  display: inline;
+  cursor: default;
+  padding: 0 1px;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.word.buffer {
+  background-color: yellow;
+}
+
+.word.selected {
+  /* Background color is handled via inline style in the template to support dynamic colors */
+}
+
+.word.whitespace {
+  cursor: default;
+}

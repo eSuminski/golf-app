@@ -1,0 +1,7 @@
+<span 
+  [class]="'word ' + state()" 
+  [style.background-color]="state() === 'selected' ? color() : null"
+  (click)="onLeftClick()" 
+  (contextmenu)="onRightClick($event)">
+  {{ word().text }}
+</span>
