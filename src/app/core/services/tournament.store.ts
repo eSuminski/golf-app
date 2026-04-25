@@ -5,11 +5,19 @@ import { Participant } from '../models/participant.model';
   providedIn: 'root'
 })
 export class TournamentStore {
+  // Parsed HTML content from the uploaded document
+  readonly documentHtml = signal<string>('');
+
   // Finalized list of participants
   readonly participants = signal<Participant[]>([]);
 
   // Words currently being selected from the document (the "buffer")
   readonly activeSelection = signal<string[]>([]);
+
+  // Set the parsed document HTML
+  setDocumentContent(html: string) {
+    this.documentHtml.set(html);
+  }
 
   // Helper to add a word to the current selection
   addWordToSelection(word: string) {
@@ -43,5 +51,6 @@ export class TournamentStore {
   reset() {
     this.participants.set([]);
     this.activeSelection.set([]);
+    this.documentHtml.set('');
   }
 }
