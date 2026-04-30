@@ -20,7 +20,7 @@
 }
 
 .word.buffer {
-  background-color: yellow;
+  background-color: #ffeb3b;
 }
 
 /* .word.selected background color is handled via inline style to support dynamic colors */

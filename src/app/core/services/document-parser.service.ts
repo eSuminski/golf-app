@@ -20,6 +20,7 @@ export class DocumentParserService {
     return parts
       .filter(part => part.length > 0)
       .map(part => ({
+        id: crypto.randomUUID(),
         text: part,
         isWhitespace: /\s/.test(part)
       }));

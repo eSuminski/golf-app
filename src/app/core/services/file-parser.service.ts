@@ -110,6 +110,7 @@ export class FileParserService {
       const wordNode: DocumentNode = {
         type: 'word',
         word: {
+          id: crypto.randomUUID(),
           text: token,
           isWhitespace
         }

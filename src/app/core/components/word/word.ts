@@ -15,17 +15,17 @@ export class WordComponent {
   state = input<'none' | 'buffer' | 'selected'>('none');
   color = input<string | null>(null);
 
-  wordClicked = output<string>();
-  wordRightClicked = output<string>();
+  wordClicked = output<WordModel>();
+  wordRightClicked = output<WordModel>();
 
   onLeftClick() {
     if (this.word().isWhitespace) return;
-    this.wordClicked.emit(this.word().text);
+    this.wordClicked.emit(this.word());
   }
 
   onRightClick(event: MouseEvent) {
     event.preventDefault();
     if (this.word().isWhitespace) return;
-    this.wordRightClicked.emit(this.word().text);
+    this.wordRightClicked.emit(this.word());
   }
 }

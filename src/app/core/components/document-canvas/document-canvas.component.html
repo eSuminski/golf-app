@@ -10,6 +10,8 @@
     <!-- Render word component -->
     <app-word
       [word]="node.word"
+      [state]="getWordState(node.word)"
+      [color]="getWordColor(node.word)"
       (wordClicked)="onWordClicked($event)"
       (wordRightClicked)="onWordRightClicked($event)"
     />

@@ -1,6 +1,7 @@
 import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DocumentNode } from '../../models/document-node.model';
+import { WordModel } from '../../models/word.model';
 import { WordComponent } from '../word/word';
 import { TournamentStore } from '../../services/tournament.store';
 
@@ -17,14 +18,37 @@ export class DocumentCanvasComponent {
 
   documentStructure = input.required<DocumentNode>();
 
-  onWordClicked(word: string) {
-    console.log('Word clicked:', word);
-    this.tournamentStore.addWordToSelection(word);
+  onWordClicked(word: WordModel) {
+    this.tournamentStore.toggleWordInSelection(word);
   }
 
-  onWordRightClicked(word: string) {
-    console.log('Word right-clicked:', word);
-    // Could be used for removing from selection or other actions
+  onWordRightClicked(word: WordModel) {
+    this.tournamentStore.addWordToSelection(word);
+    this.tournamentStore.commitParticipant();
+  }
+
+  /**
+   * Determine the state of a word for highlighting
+   */
+  getWordState(word: WordModel): 'none' | 'buffer' | 'selected' {
+    if (this.tournamentStore.isWordInBuffer(word.id)) {
+      return 'buffer';
+    }
+    if (this.tournamentStore.getParticipantForWord(word.id)) {
+      return 'selected';
+    }
+    return 'none';
+  }
+
+  /**
+   * Get the color for a word if it belongs to a participant
+   */
+  getWordColor(word: WordModel): string | null {
+    const participantId = this.tournamentStore.getParticipantForWord(word.id);
+    if (participantId) {
+      return this.tournamentStore.participantColors()[participantId] || null;
+    }
+    return null;
   }
 
   /**
