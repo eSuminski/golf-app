@@ -1,7 +1,19 @@
-<div class="canvas-container">
+<div class="canvas-container" 
+     [class.dragging]="isDragging()"
+     (mousedown)="onCanvasMouseDown($event)">
   <div class="document-content">
     <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: documentStructure() }"></ng-container>
   </div>
+  
+  <!-- Drag selection box -->
+  @if (selectionBox(); as box) {
+    <div class="selection-box" 
+         [style.left.px]="box.left"
+         [style.top.px]="box.top"
+         [style.width.px]="box.width"
+         [style.height.px]="box.height">
+    </div>
+  }
 </div>
 
 <!-- Recursive template for rendering document nodes -->

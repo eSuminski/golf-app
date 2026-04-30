@@ -95,6 +95,41 @@ export class TournamentStore {
     this.clearSelection();
   }
 
+  // Create a participant from a specific set of words (used for drag-select)
+  createParticipantFromWords(words: WordModel[]) {
+    if (words.length === 0) return;
+
+    const id = crypto.randomUUID();
+    
+    // Extract text from words (skip whitespace)
+    const textWords = words.filter(w => !w.isWhitespace).map(w => w.text);
+    
+    // First word is firstName, rest is lastName
+    const firstName = textWords[0] || '';
+    const lastName = textWords.slice(1).join(' ');
+    
+    const newParticipant: Participant = {
+      id,
+      firstName,
+      lastName,
+      isVerified: false
+    };
+    
+    // Generate a random non-yellow color (avoid hue ~60 which is yellow)
+    let hue = Math.floor(Math.random() * 360);
+    if (hue >= 40 && hue <= 80) {
+      hue = (hue + 100) % 360; // Shift away from yellow range
+    }
+    const randomColor = `hsl(${hue}, 70%, 80%)`;
+    
+    this.participants.update(current => [...current, newParticipant]);
+    this.participantColors.update(current => ({ ...current, [id]: randomColor }));
+    
+    // Track word IDs for this participant
+    const wordIds = words.map(w => w.id);
+    this.participantWordIds.update(current => ({ ...current, [id]: wordIds }));
+  }
+
   // Remove a participant
   removeParticipant(id: string) {
     this.participants.update(current => current.filter(p => p.id !== id));

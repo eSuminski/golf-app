@@ -1,4 +1,5 @@
 .canvas-container {
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -8,6 +9,14 @@
   justify-content: center;
 }
 
+/* Prevent text selection during drag */
+.canvas-container.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 .document-content {
   background: white;
   width: 100%;
@@ -15,4 +24,14 @@
   min-height: 100%;
   padding: 40px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Drag selection box */
+.selection-box {
+  position: absolute;
+  border: 2px solid #1976d2;
+  background-color: rgba(25, 118, 210, 0.1);
+  pointer-events: none;
+  z-index: 1000;
+  transition: all 0.05s ease-out;
 }

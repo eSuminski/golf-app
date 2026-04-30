@@ -1,6 +1,7 @@
 <span 
   [class]="'word ' + state() + (word().isWhitespace ? ' whitespace' : '')" 
   [style.background-color]="state() === 'selected' ? color() : null"
+  [attr.data-word-id]="word().id"
   (click)="onLeftClick()" 
   (contextmenu)="onRightClick($event)">
   {{ word().text }}
