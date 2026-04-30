@@ -8,15 +8,22 @@
   padding: 0 1px;
   border-radius: 2px;
   transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.word:not(.whitespace) {
+  cursor: pointer;
+}
+
+.word:not(.whitespace):hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .word.buffer {
   background-color: yellow;
 }
 
-.word.selected {
-  /* Background color is handled via inline style in the template to support dynamic colors */
-}
+/* .word.selected background color is handled via inline style to support dynamic colors */
 
 .word.whitespace {
   cursor: default;

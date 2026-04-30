@@ -38,8 +38,8 @@ export class Upload {
         
         this.isParsing.set(true);
         try {
-          const html = await this.fileParser.convertDocxToHtml(file);
-          this.tournamentStore.setDocumentContent(html);
+          const structure = await this.fileParser.convertDocxToStructure(file);
+          this.tournamentStore.setDocumentContent(structure);
           this.router.navigate(['/organize']);
         } catch (error) {
           console.error('Parsing failed', error);

@@ -1,3 +1,148 @@
-<div class="canvas-container" (click)="onCanvasClick($event)" (contextmenu)="onCanvasRightClick($event)">
-  <div [innerHTML]="safeHtml()" class="document-content"></div>
+<div class="canvas-container">
+  <div class="document-content">
+    <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: documentStructure() }"></ng-container>
+  </div>
 </div>
+
+<!-- Recursive template for rendering document nodes -->
+<ng-template #nodeTemplate let-node="node">
+  @if (node.type === 'word') {
+    <!-- Render word component -->
+    <app-word
+      [word]="node.word"
+      (wordClicked)="onWordClicked($event)"
+      (wordRightClicked)="onWordRightClicked($event)"
+    />
+  } @else if (node.type === 'container') {
+    <!-- Render container element with children -->
+    @switch (node.tagName) {
+      @case ('p') {
+        <p [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </p>
+      }
+      @case ('div') {
+        <div [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </div>
+      }
+      @case ('span') {
+        <span [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </span>
+      }
+      @case ('table') {
+        <table [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </table>
+      }
+      @case ('tbody') {
+        <tbody [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </tbody>
+      }
+      @case ('thead') {
+        <thead [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </thead>
+      }
+      @case ('tr') {
+        <tr [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </tr>
+      }
+      @case ('td') {
+        <td [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </td>
+      }
+      @case ('th') {
+        <th [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </th>
+      }
+      @case ('ul') {
+        <ul [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </ul>
+      }
+      @case ('ol') {
+        <ol [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </ol>
+      }
+      @case ('li') {
+        <li [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </li>
+      }
+      @case ('strong') {
+        <strong [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </strong>
+      }
+      @case ('em') {
+        <em [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </em>
+      }
+      @case ('h1') {
+        <h1 [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </h1>
+      }
+      @case ('h2') {
+        <h2 [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </h2>
+      }
+      @case ('h3') {
+        <h3 [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </h3>
+      }
+      @default {
+        <!-- Fallback for unknown tags - render as div -->
+        <div [ngStyle]="getStyles(node)" [ngClass]="getClasses(node)">
+          @for (child of node.children; track $index) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }"></ng-container>
+          }
+        </div>
+      }
+    }
+  }
+</ng-template>

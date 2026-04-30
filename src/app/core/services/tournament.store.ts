@@ -1,12 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { Participant } from '../models/participant.model';
+import { DocumentNode } from '../models/document-node.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TournamentStore {
-  // Parsed HTML content from the uploaded document
-  readonly documentHtml = signal<string>('');
+  // Parsed document structure from the uploaded document
+  readonly documentStructure = signal<DocumentNode | null>(null);
 
   // Finalized list of participants
   readonly participants = signal<Participant[]>([]);
@@ -17,9 +18,9 @@ export class TournamentStore {
   // Words currently being selected from the document (the "buffer")
   readonly activeSelection = signal<string[]>([]);
 
-  // Set the parsed document HTML
-  setDocumentContent(html: string) {
-    this.documentHtml.set(html);
+  // Set the parsed document structure
+  setDocumentContent(structure: DocumentNode) {
+    this.documentStructure.set(structure);
   }
 
   // Helper to add a word to the current selection
@@ -64,7 +65,7 @@ export class TournamentStore {
   reset() {
     this.participants.set([]);
     this.activeSelection.set([]);
-    this.documentHtml.set('');
+    this.documentStructure.set(null);
     this.participantColors.set({});
   }
 }

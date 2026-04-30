@@ -1,4 +1,6 @@
 <div class="organize-container">
   <h1>Organize Participants</h1>
-  <app-document-canvas [htmlContent]="tournamentStore.documentHtml()" />
+  @if (tournamentStore.documentStructure()) {
+    <app-document-canvas [documentStructure]="tournamentStore.documentStructure()!" />
+  }
 </div>

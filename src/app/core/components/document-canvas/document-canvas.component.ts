@@ -1,36 +1,43 @@
-import { Component, inject, input, effect, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DocumentNode } from '../../models/document-node.model';
+import { WordComponent } from '../word/word';
 import { TournamentStore } from '../../services/tournament.store';
 
 @Component({
   selector: 'app-document-canvas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, WordComponent],
   templateUrl: './document-canvas.component.html',
   styleUrl: './document-canvas.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentCanvasComponent {
-  private sanitizer = inject(DomSanitizer);
   private tournamentStore = inject(TournamentStore);
 
-  htmlContent = input.required<string>();
-  safeHtml = signal<SafeHtml>('');
+  documentStructure = input.required<DocumentNode>();
 
-  constructor() {
-    effect(() => {
-      const rawHtml = this.htmlContent();
-      this.safeHtml.set(this.sanitizer.bypassSecurityTrustHtml(rawHtml));
-    });
+  onWordClicked(word: string) {
+    console.log('Word clicked:', word);
+    this.tournamentStore.addWordToSelection(word);
   }
 
-  onCanvasClick(event: MouseEvent) {
-    console.log('Canvas clicked', event.target);
+  onWordRightClicked(word: string) {
+    console.log('Word right-clicked:', word);
+    // Could be used for removing from selection or other actions
   }
 
-  onCanvasRightClick(event: MouseEvent) {
-    event.preventDefault();
-    console.log('Canvas right-clicked', event.target);
+  /**
+   * Helper to get the style object from a DocumentNode for ngStyle binding
+   */
+  getStyles(node: DocumentNode): Record<string, string> | null {
+    return node.styles || null;
+  }
+
+  /**
+   * Helper to get the class string from a DocumentNode for ngClass binding
+   */
+  getClasses(node: DocumentNode): string | null {
+    return node.classes ? node.classes.join(' ') : null;
   }
 }

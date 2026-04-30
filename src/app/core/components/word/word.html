@@ -1,5 +1,5 @@
 <span 
-  [class]="'word ' + state()" 
+  [class]="'word ' + state() + (word().isWhitespace ? ' whitespace' : '')" 
   [style.background-color]="state() === 'selected' ? color() : null"
   (click)="onLeftClick()" 
   (contextmenu)="onRightClick($event)">
