@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as mammoth from 'mammoth';
 import * as XLSX from 'xlsx';
+import * as pdfjsLib from 'pdfjs-dist';
+
+// pdfjs runs text extraction in a web worker. The worker file is copied into
+// public/ (served at the app root) because the Vite `?url` import only works in
+// the dev server, not the production esbuild bundler.
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 @Injectable({
   providedIn: 'root',
@@ -60,6 +66,44 @@ export class FileParserService {
     } catch (error) {
       console.error('Error parsing Excel document:', error);
       throw new Error('Failed to parse Excel document.');
+    }
+  }
+
+  /**
+   * Converts a PDF file to an HTML string using pdfjs-dist.
+   *
+   * Each page becomes its own section: a heading with the page number followed
+   * by one <p> per text element, in the order pdfjs emits them (reading order).
+   * Text is HTML-escaped, consistent with the other parsers.
+   */
+  async convertPdfToHtml(file: File): Promise<string> {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) });
+      const pdfDocument = await loadingTask.promise;
+      const parts: string[] = [];
+
+      for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
+        const page = await pdfDocument.getPage(pageNumber);
+        const textContent = await page.getTextContent();
+
+        // Narrow to TextItem (has `str`) via the `in` operator; TextMarkedContent
+        // has no text. Empty items are dropped.
+        const lines = textContent.items
+          .map((item) => ('str' in item ? item.str : ''))
+          .map((text) => text.trim())
+          .filter((text) => text.length > 0);
+
+        if (lines.length === 0) continue;
+
+        parts.push(`<h3>Page ${pageNumber}</h3>`);
+        parts.push(...lines.map((line) => `<p>${this.escapeHtml(line)}</p>`));
+      }
+
+      return parts.join('\n');
+    } catch (error) {
+      console.error('Error parsing PDF document:', error);
+      throw new Error('Failed to parse PDF document.');
     }
   }
 
