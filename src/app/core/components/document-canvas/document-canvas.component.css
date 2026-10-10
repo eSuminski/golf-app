@@ -14,5 +14,22 @@
   max-width: 800px;
   min-height: 100%;
   padding: 40px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Selectable words — cursor hints selection is possible.
+   The spans are injected via [innerHTML], so they do NOT receive the
+   component's view-encapsulation attribute; deep-penetrate to style them. */
+:host ::ng-deep .word {
+  cursor: pointer;
+}
+
+:host ::ng-deep .word.selected {
+  background: #fde68a; /* amber highlight for any selected word */
+  border-radius: 2px;
+}
+
+:host ::ng-deep .word.is-first {
+  background: #93c5fd; /* blue highlight for the current first name */
+  font-weight: 600;
 }
