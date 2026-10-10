@@ -31,25 +31,37 @@ export class Upload {
 
       if (fileName.endsWith('.pdf')) {
         this.themeService.setTheme('pdf');
-      } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx') || fileName.endsWith('.csv')) {
+      } else if (
+        fileName.endsWith('.xls') ||
+        fileName.endsWith('.xlsx') ||
+        fileName.endsWith('.csv')
+      ) {
         this.themeService.setTheme('excel');
+        await this.parseAndNavigate(file, (f) => this.fileParser.convertExcelToHtml(f));
       } else if (fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
         this.themeService.setTheme('word');
-        
-        this.isParsing.set(true);
-        try {
-          const html = await this.fileParser.convertDocxToHtml(file);
-          this.tournamentStore.setDocumentContent(html);
-          this.router.navigate(['/organize']);
-        } catch (error) {
-          console.error('Parsing failed', error);
-          // In a real app, we'd show an error message to the user
-        } finally {
-          this.isParsing.set(false);
-        }
+        await this.parseAndNavigate(file, (f) => this.fileParser.convertDocxToHtml(f));
       } else {
         this.themeService.setTheme('none');
       }
+    }
+  }
+
+  /**
+   * Parses a file into HTML, stores it, then routes to the organize view.
+   * Shared by the Word and Excel upload branches to avoid duplication.
+   */
+  private async parseAndNavigate(file: File, parser: (file: File) => Promise<string>) {
+    this.isParsing.set(true);
+    try {
+      const html = await parser(file);
+      this.tournamentStore.setDocumentContent(html);
+      this.router.navigate(['/organize']);
+    } catch (error) {
+      console.error('Parsing failed', error);
+      // In a real app, we'd show an error message to the user
+    } finally {
+      this.isParsing.set(false);
     }
   }
 }
