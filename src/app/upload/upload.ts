@@ -31,6 +31,7 @@ export class Upload {
 
       if (fileName.endsWith('.pdf')) {
         this.themeService.setTheme('pdf');
+        await this.parseAndNavigate(file, (f) => this.fileParser.convertPdfToHtml(f));
       } else if (
         fileName.endsWith('.xls') ||
         fileName.endsWith('.xlsx') ||
