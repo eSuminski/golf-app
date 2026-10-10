@@ -74,7 +74,10 @@ export class FileParserService {
    *
    * Each page becomes its own section: a heading with the page number followed
    * by one <p> per text element, in the order pdfjs emits them (reading order).
-   * Text is HTML-escaped, consistent with the other parsers.
+   * Leading/trailing punctuation is stripped from each token (like Excel
+   * cleaning), so tokens such as "Smith," become "Smith". Internal punctuation
+   * (apostrophes, hyphens, initials) is preserved. Text is HTML-escaped,
+   * consistent with the other parsers.
    */
   async convertPdfToHtml(file: File): Promise<string> {
     try {
@@ -88,10 +91,10 @@ export class FileParserService {
         const textContent = await page.getTextContent();
 
         // Narrow to TextItem (has `str`) via the `in` operator; TextMarkedContent
-        // has no text. Empty items are dropped.
+        // has no text. Empty items are dropped after punctuation cleanup.
         const lines = textContent.items
           .map((item) => ('str' in item ? item.str : ''))
-          .map((text) => text.trim())
+          .map((text) => this.cleanToken(text))
           .filter((text) => text.length > 0);
 
         if (lines.length === 0) continue;
@@ -119,6 +122,19 @@ export class FileParserService {
     if (cells.length === 0) return null;
 
     return `<p>${this.escapeHtml(cells.join(' '))}</p>`;
+  }
+
+  /**
+   * Trims whitespace and strips leading/trailing punctuation and symbols from a
+   * token, so pdfjs fragments like "Smith," or "\"John" become "Smith" / "John".
+   * The Unicode `u` flag covers curly quotes and dashes. Internal punctuation
+   * (apostrophes, hyphens, initials) is deliberately preserved.
+   */
+  private cleanToken(text: string): string {
+    return text
+      .trim()
+      .replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, '')
+      .trim();
   }
 
   /**
