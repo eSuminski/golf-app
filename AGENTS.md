@@ -66,8 +66,7 @@
       "lazyLoad": "loadComponent"
     },
     "testing": {
-      "standaloneTestBed": true,
-      "httpTesting": "provideHttpClientTesting"
+      "process":"use TS compiler with no emit to validate TS code"
     }
   },
   "allowed": {
