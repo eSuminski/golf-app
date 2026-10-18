@@ -23,6 +23,14 @@ interface ViewGroup {
   members: Participant[];
 }
 
+/** Issues found during pre-export validation. */
+interface ExportWarnings {
+  blanks: string[];
+  duplicates: string[];
+}
+
+const SKIP_WARNINGS_KEY = 'golf-app.skip-export-warnings';
+
 @Component({
   selector: 'app-finalize',
   standalone: true,
@@ -49,6 +57,11 @@ export class Finalize {
 
   // In-progress team name edits, keyed by team id (seeded like participant drafts).
   protected readonly teamDrafts = signal<Record<string, string>>({});
+
+  // Export warning state
+  protected readonly exportWarnings = signal<ExportWarnings | null>(null);
+  protected readonly dontShowAgain = signal(false);
+  protected readonly skipExportWarnings = signal(localStorage.getItem(SKIP_WARNINGS_KEY) === '1');
 
   constructor() {
     // Capture the baseline for undo/reset when the user first lands here.
@@ -223,6 +236,104 @@ export class Finalize {
       teamNext[t.id] = t.name;
     }
     this.teamDrafts.set(teamNext);
+  }
+
+  // --- CSV export ---
+  protected exportCsv() {
+    if (this.skipExportWarnings()) {
+      this.doExport();
+      return;
+    }
+
+    const warnings = this.computeWarnings();
+    if (warnings.blanks.length === 0 && warnings.duplicates.length === 0) {
+      this.doExport();
+      return;
+    }
+
+    this.exportWarnings.set(warnings);
+  }
+
+  protected confirmExport() {
+    if (this.dontShowAgain()) {
+      localStorage.setItem(SKIP_WARNINGS_KEY, '1');
+      this.skipExportWarnings.set(true);
+    }
+    this.exportWarnings.set(null);
+    this.doExport();
+  }
+
+  protected cancelExport() {
+    this.exportWarnings.set(null);
+  }
+
+  protected onDontShowAgainChange(event: Event) {
+    this.dontShowAgain.set((event.target as HTMLInputElement).checked);
+  }
+
+  /** Finds blank-name and duplicate participants. */
+  private computeWarnings(): ExportWarnings {
+    const participants = this.tournamentStore.participants();
+    const blanks: string[] = [];
+    const seen = new Map<string, number>();
+    const duplicates: string[] = [];
+
+    for (const p of participants) {
+      const first = p.firstName.trim();
+      const last = (p.lastName ?? '').trim();
+      const full = `${first} ${last}`.trim();
+
+      if (!first && !last) {
+        blanks.push('(empty name)');
+        continue;
+      }
+      if (!first || !last) {
+        blanks.push(full);
+      }
+
+      const key = full.toLowerCase();
+      const count = seen.get(key) ?? 0;
+      if (count > 0) duplicates.push(full);
+      seen.set(key, count + 1);
+    }
+
+    return { blanks, duplicates };
+  }
+
+  /** Builds the CSV string: flat by default, adds a Team column when teams exist. */
+  private buildCsv(): string {
+    const participants = this.tournamentStore.participants();
+    const teams = this.tournamentStore.teams();
+    const teamName = new Map(teams.map((t) => [t.id, t.name]));
+    const withTeams = teams.length > 0;
+
+    const header = withTeams ? ['First Name', 'Last Name', 'Team'] : ['First Name', 'Last Name'];
+
+    const rows = participants.map((p) => {
+      const row = [p.firstName, p.lastName ?? ''];
+      if (withTeams) row.push(p.teamId ? (teamName.get(p.teamId) ?? '') : '');
+      return row;
+    });
+
+    return [header, ...rows].map((row) => row.map(this.escapeCsvCell).join(',')).join('\r\n');
+  }
+
+  private escapeCsvCell(value: string): string {
+    if (/[",\r\n]/.test(value)) {
+      return `"${value.replace(/"/g, '""')}"`;
+    }
+    return value;
+  }
+
+  private doExport() {
+    const csv = this.buildCsv();
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'participants.csv';
+    link.click();
+    URL.revokeObjectURL(url);
   }
 
   protected goBackToOrganize() {

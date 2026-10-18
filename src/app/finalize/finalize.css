@@ -68,6 +68,92 @@
   cursor: not-allowed;
 }
 
+.export-btn {
+  padding: 8px 12px;
+  background: #15803d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.export-btn:hover {
+  background: #166534;
+}
+
+/* --- Export warning dialog --- */
+.export-dialog {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.export-dialog-box {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.export-dialog-box h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.warn-title {
+  margin: 8px 0 4px;
+  font-weight: 600;
+  color: #b45309;
+}
+
+.warn-list {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  max-height: 120px;
+  overflow-y: auto;
+  color: #475569;
+}
+
+.dont-show {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.export-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancel-btn {
+  padding: 8px 12px;
+  background: #e2e8f0;
+  color: #1e293b;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.proceed-btn {
+  padding: 8px 12px;
+  background: #b45309;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .count {
   margin: 0;
   color: #475569;

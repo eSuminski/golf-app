@@ -21,6 +21,7 @@
       <button type="button" class="back-btn" (click)="goBackToOrganize()">
         ← Back to Organize
       </button>
+      <button type="button" class="export-btn" (click)="exportCsv()">Export CSV</button>
     </div>
   </header>
 
@@ -143,4 +144,49 @@
       </div>
     }
   </div>
+
+  @if (exportWarnings(); as warnings) {
+    <div
+      class="export-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="export-dialog-title"
+    >
+      <div class="export-dialog-box">
+        <h2 id="export-dialog-title">Review before export</h2>
+
+        @if (warnings.blanks.length > 0) {
+          <p class="warn-title">Blank names ({{ warnings.blanks.length }}):</p>
+          <ul class="warn-list">
+            @for (name of warnings.blanks; track $index) {
+              <li>{{ name }}</li>
+            }
+          </ul>
+        }
+
+        @if (warnings.duplicates.length > 0) {
+          <p class="warn-title">Duplicate names ({{ warnings.duplicates.length }}):</p>
+          <ul class="warn-list">
+            @for (name of warnings.duplicates; track $index) {
+              <li>{{ name }}</li>
+            }
+          </ul>
+        }
+
+        <label class="dont-show">
+          <input
+            type="checkbox"
+            [checked]="dontShowAgain()"
+            (change)="onDontShowAgainChange($event)"
+          />
+          Don't show this warning again
+        </label>
+
+        <div class="export-dialog-actions">
+          <button type="button" class="cancel-btn" (click)="cancelExport()">Cancel</button>
+          <button type="button" class="proceed-btn" (click)="confirmExport()">Export anyway</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>
