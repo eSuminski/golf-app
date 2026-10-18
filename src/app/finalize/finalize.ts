@@ -25,7 +25,7 @@ interface ViewGroup {
 
 /** Issues found during pre-export validation. */
 interface ExportWarnings {
-  blanks: string[];
+  blankCount: number;
   duplicates: string[];
 }
 
@@ -246,7 +246,7 @@ export class Finalize {
     }
 
     const warnings = this.computeWarnings();
-    if (warnings.blanks.length === 0 && warnings.duplicates.length === 0) {
+    if (warnings.blankCount === 0 && warnings.duplicates.length === 0) {
       this.doExport();
       return;
     }
@@ -274,7 +274,7 @@ export class Finalize {
   /** Finds blank-name and duplicate participants. */
   private computeWarnings(): ExportWarnings {
     const participants = this.tournamentStore.participants();
-    const blanks: string[] = [];
+    let blankCount = 0;
     const seen = new Map<string, number>();
     const duplicates: string[] = [];
 
@@ -283,12 +283,8 @@ export class Finalize {
       const last = (p.lastName ?? '').trim();
       const full = `${first} ${last}`.trim();
 
-      if (!first && !last) {
-        blanks.push('(empty name)');
-        continue;
-      }
       if (!first || !last) {
-        blanks.push(full);
+        blankCount++;
       }
 
       const key = full.toLowerCase();
@@ -297,7 +293,7 @@ export class Finalize {
       seen.set(key, count + 1);
     }
 
-    return { blanks, duplicates };
+    return { blankCount, duplicates };
   }
 
   /** Builds the CSV string: flat by default, adds a Team column when teams exist. */

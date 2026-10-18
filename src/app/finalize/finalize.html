@@ -155,13 +155,10 @@
       <div class="export-dialog-box">
         <h2 id="export-dialog-title">Review before export</h2>
 
-        @if (warnings.blanks.length > 0) {
-          <p class="warn-title">Blank names ({{ warnings.blanks.length }}):</p>
-          <ul class="warn-list">
-            @for (name of warnings.blanks; track $index) {
-              <li>{{ name }}</li>
-            }
-          </ul>
+        @if (warnings.blankCount > 0) {
+          <p class="warn-title">
+            Blank names: {{ warnings.blankCount }} row(s) have a missing first or last name.
+          </p>
         }
 
         @if (warnings.duplicates.length > 0) {
