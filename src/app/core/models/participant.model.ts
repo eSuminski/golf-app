@@ -3,7 +3,14 @@ export interface Participant {
   firstName: string;
   lastName?: string;
   sourceLine?: string;
+  teamId?: string;
   isVerified: boolean;
+}
+
+/** A named group that participants can optionally be assigned to. */
+export interface Team {
+  id: string;
+  name: string;
 }
 
 /**
