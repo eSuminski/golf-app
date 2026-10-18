@@ -39,7 +39,7 @@ export class DocumentCanvasComponent {
     viewChild.required<ElementRef<HTMLElement>>('documentContent');
 
   // tokenId -> word, built once when the document is tokenized. The click
-  // handlers (next phase) resolve a clicked span's token id into this map.
+  // handlers resolve a clicked span's token id into this map.
   readonly tokenRegistry = new Map<string, TokenRecord>();
 
   constructor() {
@@ -72,23 +72,49 @@ export class DocumentCanvasComponent {
     });
   }
 
+  onCanvasClick(event: MouseEvent) {
+    const token = this.resolveToken(event.target);
+    if (!token) return;
+    // Left-click toggles the word in/out of the selection. The store assigns
+    // roles: first click becomes the first name, subsequent become last name,
+    // and deselecting the first name promotes the next-selected word.
+    this.tournamentStore.toggleWord(token.tokenId, token.text);
+  }
+
+  onCanvasRightClick(event: MouseEvent) {
+    event.preventDefault();
+    const token = this.resolveToken(event.target);
+    if (!token) return;
+
+    // Right-click finalizes the current record. If the word isn't already
+    // selected, act as if it were left-clicked first (so a word can be
+    // finalized with a single right-click), then commit the whole selection.
+    if (!this.tournamentStore.selectedTokenIds().has(token.tokenId)) {
+      this.tournamentStore.toggleWord(token.tokenId, token.text);
+    }
+    this.tournamentStore.commitParticipant(token.sourceLine);
+  }
+
+  /**
+   * Resolves a click target to its token registry record, walking up from the
+   * clicked element to the enclosing word span. Returns null when the click
+   * landed on non-word content (whitespace, headings outside a span, etc.).
+   */
+  private resolveToken(target: EventTarget | null): TokenRecord | null {
+    if (!(target instanceof HTMLElement)) return null;
+    const span = target.closest<HTMLElement>('span[data-token-id]');
+    if (!span) return null;
+    const tokenId = span.dataset['tokenId'];
+    if (tokenId == null) return null;
+    return this.tokenRegistry.get(tokenId) ?? null;
+  }
+
   /**
    * Wraps every word in the given HTML string inside a selectable span. Returns
    * the modified HTML. Each token gets a stable, incrementing id for this
    * document; words inside headings and tables are tokenized too, so any word
    * is selectable.
    */
-  onCanvasClick(event: MouseEvent) {
-    // Implemented in the next phase (selection click handling).
-    console.log('Canvas clicked', event.target);
-  }
-
-  onCanvasRightClick(event: MouseEvent) {
-    event.preventDefault();
-    // Implemented in the next phase (finalize on right-click).
-    console.log('Canvas right-clicked', event.target);
-  }
-
   private tokenize(rawHtml: string): string {
     this.tokenRegistry.clear();
     const container = document.createElement('div');
