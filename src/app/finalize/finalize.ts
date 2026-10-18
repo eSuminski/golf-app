@@ -194,6 +194,37 @@ export class Finalize {
     this.tournamentStore.removeParticipant(id);
   }
 
+  protected undo() {
+    this.tournamentStore.undo();
+    this.resyncDraftsFromStore();
+  }
+
+  protected resetEdits() {
+    this.tournamentStore.resetEdits();
+    this.resyncDraftsFromStore();
+  }
+
+  /**
+   * After an undo/reset the store state reverts, but the inputs read from the
+   * drafts signal (seeded once). Rebuild drafts from the reverted participants
+   * so inputs reflect the undone state.
+   */
+  private resyncDraftsFromStore() {
+    const participants = this.tournamentStore.participants();
+    const next: Record<string, NameDraft> = {};
+    for (const p of participants) {
+      next[p.id] = { first: p.firstName, last: p.lastName ?? '' };
+    }
+    this.drafts.set(next);
+
+    const teams = this.tournamentStore.teams();
+    const teamNext: Record<string, string> = {};
+    for (const t of teams) {
+      teamNext[t.id] = t.name;
+    }
+    this.teamDrafts.set(teamNext);
+  }
+
   protected goBackToOrganize() {
     this.router.navigate(['/organize']);
   }

@@ -38,6 +38,36 @@
   background: #cbd5e1;
 }
 
+.undo-btn,
+.reset-btn {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.undo-btn {
+  background: white;
+  color: #1e3a8a;
+}
+
+.reset-btn {
+  background: white;
+  color: #b45309;
+}
+
+.undo-btn:hover:not([disabled]),
+.reset-btn:hover:not([disabled]) {
+  background: #f1f5f9;
+}
+
+.undo-btn:disabled,
+.reset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .count {
   margin: 0;
   color: #475569;

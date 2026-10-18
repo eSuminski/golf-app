@@ -2,6 +2,22 @@
   <header class="finalize-header">
     <h1>Finalize Participants</h1>
     <div class="header-actions">
+      <button
+        type="button"
+        class="undo-btn"
+        (click)="undo()"
+        [disabled]="!tournamentStore.canUndo()"
+      >
+        Undo
+      </button>
+      <button
+        type="button"
+        class="reset-btn"
+        (click)="resetEdits()"
+        [disabled]="!tournamentStore.hasEdits()"
+      >
+        Reset
+      </button>
       <button type="button" class="back-btn" (click)="goBackToOrganize()">
         ← Back to Organize
       </button>

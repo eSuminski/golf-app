@@ -44,12 +44,14 @@ export class TournamentStore {
   readonly selectedTokenIds = computed(() => new Set(this.activeSelection().map((e) => e.tokenId)));
 
   // --- Undo / reset machinery (Finalize edits) ---
-  // LIFO stack of immutable snapshots taken before each mutation.
-  private undoStack: FinalizeSnapshot[] = [];
+  // LIFO stack of immutable snapshots taken before each mutation. Held as a
+  // signal so `canUndo` reacts when entries are pushed/pulled — a plain array
+  // would make the computed never re-evaluate.
+  private readonly undoStack = signal<FinalizeSnapshot[]>([]);
   // State as it was when the user first landed on Finalize.
   private initialSnapshot: FinalizeSnapshot | null = null;
 
-  readonly canUndo = computed(() => this.undoStack.length > 0);
+  readonly canUndo = computed(() => this.undoStack().length > 0);
   readonly hasEdits = computed(() => this.initialSnapshot !== null);
 
   // Set the parsed document HTML
@@ -64,18 +66,19 @@ export class TournamentStore {
    */
   beginFinalizeSession() {
     this.initialSnapshot = this.snapshot();
-    this.undoStack = [];
+    this.undoStack.set([]);
   }
 
   /** Pushes the current state onto the undo stack (call before each mutation). */
   private snapshotBeforeMutation() {
-    this.undoStack.push(this.snapshot());
+    this.undoStack.update((stack) => [...stack, this.snapshot()]);
   }
 
   /** Restores the most recent snapshot (undo). No-op when the stack is empty. */
   undo() {
-    const previous = this.undoStack.pop();
+    const previous = this.undoStack().at(-1);
     if (!previous) return;
+    this.undoStack.update((stack) => stack.slice(0, -1));
     this.restore(previous);
   }
 
@@ -83,7 +86,7 @@ export class TournamentStore {
   resetEdits() {
     if (!this.initialSnapshot) return;
     this.restore(this.initialSnapshot);
-    this.undoStack = [];
+    this.undoStack.set([]);
   }
 
   private snapshot(): FinalizeSnapshot {
@@ -223,7 +226,7 @@ export class TournamentStore {
     this.teams.set([]);
     this.activeSelection.set([]);
     this.documentHtml.set('');
-    this.undoStack = [];
+    this.undoStack.set([]);
     this.initialSnapshot = null;
   }
 }
