@@ -12,14 +12,26 @@
 
 .organize-layout {
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  gap: 24px;
+  align-items: stretch;
   flex: 1;
   min-height: 0;
 }
 
+/* Canvas takes ~80% of the row width. Made a flex column so the document
+   canvas (its own overflow:auto host) fills the slot exactly and scrolls
+   internally instead of growing past the column. */
 .canvas-column {
-  flex: 1;
+  flex: 4 1 0;
   min-width: 0;
-  height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Preview takes the remaining ~20%. Host is a flex container so the card
+   always fills its slot and can't drift left over the canvas scrollbar. */
+app-preview {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
 }

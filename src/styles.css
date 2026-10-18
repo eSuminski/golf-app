@@ -1,1 +1,9 @@
+/* Global border-box sizing so width:100% + padding never overflows a
+   container into a sibling (e.g. the canvas bleeding under the preview card). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* You can add global styles to this file, and also import other style files */
