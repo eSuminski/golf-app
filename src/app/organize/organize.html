@@ -1,4 +1,9 @@
 <div class="organize-container">
   <h1>Organize Participants</h1>
-  <app-document-canvas [htmlContent]="tournamentStore.documentHtml()" />
+  <div class="organize-layout">
+    <div class="canvas-column">
+      <app-document-canvas [htmlContent]="tournamentStore.documentHtml()" />
+    </div>
+    <app-preview />
+  </div>
 </div>
