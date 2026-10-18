@@ -8,57 +8,123 @@
     </div>
   </header>
 
-  <p class="count">Players: {{ tournamentStore.participants().length }}</p>
+  <div class="finalize-layout">
+    <!-- Teams manager -->
+    <aside class="teams-panel">
+      <h2>Teams</h2>
+      <div class="team-create">
+        <input
+          class="team-name-input"
+          type="text"
+          [value]="newTeamName()"
+          (input)="onNewTeamNameInput($event)"
+          placeholder="New team name"
+          (keydown.enter)="createTeam()"
+        />
+        <button type="button" class="add-team-btn" (click)="createTeam()">+</button>
+      </div>
 
-  @if (tournamentStore.participants().length === 0) {
-    <p class="empty">No participants yet. Go back to Organize to add players.</p>
-  } @else {
-    <ul class="player-list">
-      @for (p of tournamentStore.participants(); track p.id; let i = $index) {
-        <li
-          class="player-row"
-          [class.dragging]="dragIndex() === i"
-          draggable="true"
-          (dragstart)="onDragStart(i)"
-          (dragend)="onDragEnd()"
-          (dragover)="$event.preventDefault()"
-          (drop)="onDrop(i)"
-        >
-          <span class="drag-handle" aria-hidden="true">⠿</span>
-
-          <div class="name-fields">
-            <input
-              class="name-input"
-              type="text"
-              [value]="drafts()[p.id]?.first ?? ''"
-              (input)="onNameInput(p.id, 'first', $event)"
-              (blur)="commitName(p.id)"
-              (keydown.enter)="commitName(p.id)"
-              placeholder="First name"
-              aria-label="First name for {{ p.firstName }} {{ p.lastName }}"
-            />
-            <input
-              class="name-input"
-              type="text"
-              [value]="drafts()[p.id]?.last ?? ''"
-              (input)="onNameInput(p.id, 'last', $event)"
-              (blur)="commitName(p.id)"
-              (keydown.enter)="commitName(p.id)"
-              placeholder="Last name"
-              aria-label="Last name for {{ p.firstName }} {{ p.lastName }}"
-            />
-          </div>
-
-          <button
-            type="button"
-            class="remove-btn"
-            (click)="removeParticipant(p.id)"
-            aria-label="Remove {{ p.firstName }} {{ p.lastName }}"
-          >
-            &times;
-          </button>
-        </li>
+      @if (!hasTeams()) {
+        <p class="empty">No teams yet. Add one to group players.</p>
+      } @else {
+        <ul class="team-list">
+          @for (t of tournamentStore.teams(); track t.id) {
+            <li class="team-item">
+              <input
+                class="team-name-input"
+                type="text"
+                [value]="teamDrafts()[t.id] ?? t.name"
+                (input)="onTeamNameInput(t.id, $event)"
+                (blur)="commitTeamName(t.id)"
+                (keydown.enter)="commitTeamName(t.id)"
+                aria-label="Team name"
+              />
+              <button
+                type="button"
+                class="remove-btn"
+                (click)="removeTeam(t.id)"
+                aria-label="Remove team {{ t.name }}"
+              >
+                &times;
+              </button>
+            </li>
+          }
+        </ul>
       }
-    </ul>
-  }
+    </aside>
+
+    <!-- Player list (grouped by team when teams exist) -->
+    @if (tournamentStore.participants().length === 0) {
+      <p class="empty">No participants yet. Go back to Organize to add players.</p>
+    } @else {
+      <div class="players-panel">
+        @for (group of viewGroups(); track group.key) {
+          <section class="player-group">
+            <h3 class="group-label">{{ group.label }} ({{ group.members.length }})</h3>
+
+            <ul class="player-list">
+              @for (p of group.members; track p.id) {
+                <li
+                  class="player-row"
+                  [class.dragging]="isDragging(p.id)"
+                  draggable="true"
+                  (dragstart)="onDragStart(p.id)"
+                  (dragend)="onDragEnd()"
+                  (dragover)="$event.preventDefault()"
+                  (drop)="onDrop(p.id)"
+                >
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+
+                  <div class="name-fields">
+                    <input
+                      class="name-input"
+                      type="text"
+                      [value]="drafts()[p.id]?.first ?? ''"
+                      (input)="onNameInput(p.id, 'first', $event)"
+                      (blur)="commitName(p.id)"
+                      (keydown.enter)="commitName(p.id)"
+                      placeholder="First name"
+                      aria-label="First name for {{ p.firstName }} {{ p.lastName }}"
+                    />
+                    <input
+                      class="name-input"
+                      type="text"
+                      [value]="drafts()[p.id]?.last ?? ''"
+                      (input)="onNameInput(p.id, 'last', $event)"
+                      (blur)="commitName(p.id)"
+                      (keydown.enter)="commitName(p.id)"
+                      placeholder="Last name"
+                      aria-label="Last name for {{ p.firstName }} {{ p.lastName }}"
+                    />
+                  </div>
+
+                  @if (hasTeams()) {
+                    <select
+                      class="team-select"
+                      (change)="onTeamAssign(p.id, $event)"
+                      aria-label="Team for {{ p.firstName }} {{ p.lastName }}"
+                    >
+                      <option value="" [selected]="!p.teamId">No team</option>
+                      @for (t of tournamentStore.teams(); track t.id) {
+                        <option [value]="t.id" [selected]="p.teamId === t.id">{{ t.name }}</option>
+                      }
+                    </select>
+                  }
+
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="removeParticipant(p.id)"
+                    aria-label="Remove {{ p.firstName }} {{ p.lastName }}"
+                  >
+                    &times;
+                  </button>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      </div>
+    }
+  </div>
 </div>
