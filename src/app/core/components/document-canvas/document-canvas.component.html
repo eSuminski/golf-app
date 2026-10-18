@@ -1,3 +1,7 @@
-<div class="canvas-container" (click)="onCanvasClick($event)" (contextmenu)="onCanvasRightClick($event)">
-  <div [innerHTML]="safeHtml()" class="document-content"></div>
+<div
+  class="canvas-container"
+  (click)="onCanvasClick($event)"
+  (contextmenu)="onCanvasRightClick($event)"
+>
+  <div #documentContent [innerHTML]="safeHtml()" class="document-content"></div>
 </div>

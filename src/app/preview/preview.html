@@ -1,1 +1,42 @@
-<p>preview works!</p>
+<aside class="preview-panel">
+  <h2>Participants</h2>
+
+  <!-- Current record being built -->
+  <section class="current-record" aria-label="Record being built">
+    <h3>Building</h3>
+    <p class="current-name" [class.empty]="!currentName()">
+      {{ currentName() || 'Select a word to start a record…' }}
+    </p>
+    <p class="hint">Left-click words; right-click to finalize.</p>
+  </section>
+
+  <!-- Committed participants -->
+  <section class="committed" aria-label="Committed participants">
+    <h3>Committed ({{ committedCount() }})</h3>
+    @if (tournamentStore.participants().length === 0) {
+      <p class="empty">No participants yet.</p>
+    } @else {
+      <ul class="participant-list">
+        @for (p of tournamentStore.participants(); track p.id) {
+          <li class="participant">
+            <span class="name">{{ p.firstName }} {{ p.lastName }}</span>
+            <button
+              type="button"
+              class="remove"
+              (click)="removeParticipant(p.id)"
+              aria-label="Remove {{ p.firstName }} {{ p.lastName }}"
+            >
+              &times;
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <footer class="preview-footer">
+    <button type="button" class="finalize-btn" (click)="goToFinalize()">
+      Continue to Finalize
+    </button>
+  </footer>
+</aside>
