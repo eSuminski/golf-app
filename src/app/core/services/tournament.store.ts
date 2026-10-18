@@ -1,5 +1,11 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { Participant, SelectionEntry } from '../models/participant.model';
+import { Participant, SelectionEntry, Team } from '../models/participant.model';
+
+/** Immutable snapshot of the Finalize-editable state (participants + teams). */
+interface FinalizeSnapshot {
+  participants: Participant[];
+  teams: Team[];
+}
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +16,9 @@ export class TournamentStore {
 
   // Committed participants (survives navigation to preview/finalize)
   readonly participants = signal<Participant[]>([]);
+
+  // Optional teams that participants can be assigned to
+  readonly teams = signal<Team[]>([]);
 
   // Words selected while building a record, in click order. The first entry
   // always carries the `first` role; the rest are `last`. Deselecting the
@@ -34,9 +43,62 @@ export class TournamentStore {
   // Set of selected token ids, for deriving span highlight classes
   readonly selectedTokenIds = computed(() => new Set(this.activeSelection().map((e) => e.tokenId)));
 
+  // --- Undo / reset machinery (Finalize edits) ---
+  // LIFO stack of immutable snapshots taken before each mutation. Held as a
+  // signal so `canUndo` reacts when entries are pushed/pulled — a plain array
+  // would make the computed never re-evaluate.
+  private readonly undoStack = signal<FinalizeSnapshot[]>([]);
+  // State as it was when the user first landed on Finalize.
+  private initialSnapshot: FinalizeSnapshot | null = null;
+
+  readonly canUndo = computed(() => this.undoStack().length > 0);
+  readonly hasEdits = computed(() => this.initialSnapshot !== null);
+
   // Set the parsed document HTML
   setDocumentContent(html: string) {
     this.documentHtml.set(html);
+  }
+
+  /**
+   * Begins a Finalize session: captures the current participants + teams as the
+   * baseline for hard reset, and clears any prior undo history. Call when the
+   * user first lands on the Finalize screen.
+   */
+  beginFinalizeSession() {
+    this.initialSnapshot = this.snapshot();
+    this.undoStack.set([]);
+  }
+
+  /** Pushes the current state onto the undo stack (call before each mutation). */
+  private snapshotBeforeMutation() {
+    this.undoStack.update((stack) => [...stack, this.snapshot()]);
+  }
+
+  /** Restores the most recent snapshot (undo). No-op when the stack is empty. */
+  undo() {
+    const previous = this.undoStack().at(-1);
+    if (!previous) return;
+    this.undoStack.update((stack) => stack.slice(0, -1));
+    this.restore(previous);
+  }
+
+  /** Hard-resets to the state captured when the Finalize session began. */
+  resetEdits() {
+    if (!this.initialSnapshot) return;
+    this.restore(this.initialSnapshot);
+    this.undoStack.set([]);
+  }
+
+  private snapshot(): FinalizeSnapshot {
+    return {
+      participants: this.participants().map((p) => ({ ...p })),
+      teams: this.teams().map((t) => ({ ...t })),
+    };
+  }
+
+  private restore(snapshot: FinalizeSnapshot) {
+    this.participants.set(snapshot.participants.map((p) => ({ ...p })));
+    this.teams.set(snapshot.teams.map((t) => ({ ...t })));
   }
 
   /**
@@ -100,13 +162,71 @@ export class TournamentStore {
 
   // Remove a participant
   removeParticipant(id: string) {
+    this.snapshotBeforeMutation();
     this.participants.update((current) => current.filter((p) => p.id !== id));
+  }
+
+  // --- Finalize mutations (each snapshots before mutating) ---
+
+  /** Updates editable fields (e.g. first/last name) of a participant. */
+  updateParticipant(id: string, fields: Partial<Pick<Participant, 'firstName' | 'lastName'>>) {
+    this.snapshotBeforeMutation();
+    this.participants.update((current) =>
+      current.map((p) => (p.id === id ? { ...p, ...fields } : p)),
+    );
+  }
+
+  /** Moves a participant from one index to another (row reorder). */
+  reorderParticipants(fromIndex: number, toIndex: number) {
+    this.snapshotBeforeMutation();
+    this.participants.update((current) => {
+      if (fromIndex < 0 || fromIndex >= current.length) return current;
+      const next = [...current];
+      const [moved] = next.splice(fromIndex, 1);
+      const clamped = Math.max(0, Math.min(toIndex, next.length));
+      next.splice(clamped, 0, moved);
+      return next;
+    });
+  }
+
+  /** Assigns a participant to a team (or unassigns when teamId is null). */
+  assignToTeam(participantId: string, teamId: string | null) {
+    this.snapshotBeforeMutation();
+    this.participants.update((current) =>
+      current.map((p) => (p.id === participantId ? { ...p, teamId: teamId ?? undefined } : p)),
+    );
+  }
+
+  /** Creates a new team and returns its id. */
+  createTeam(name: string): string {
+    this.snapshotBeforeMutation();
+    const team: Team = { id: crypto.randomUUID(), name };
+    this.teams.update((current) => [...current, team]);
+    return team.id;
+  }
+
+  /** Renames a team. */
+  renameTeam(id: string, name: string) {
+    this.snapshotBeforeMutation();
+    this.teams.update((current) => current.map((t) => (t.id === id ? { ...t, name } : t)));
+  }
+
+  /** Removes a team and unassigns its members. */
+  removeTeam(id: string) {
+    this.snapshotBeforeMutation();
+    this.teams.update((current) => current.filter((t) => t.id !== id));
+    this.participants.update((current) =>
+      current.map((p) => (p.teamId === id ? { ...p, teamId: undefined } : p)),
+    );
   }
 
   // Reset the entire store
   reset() {
     this.participants.set([]);
+    this.teams.set([]);
     this.activeSelection.set([]);
     this.documentHtml.set('');
+    this.undoStack.set([]);
+    this.initialSnapshot = null;
   }
 }
