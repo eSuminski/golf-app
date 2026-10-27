@@ -1,29 +1,18 @@
 <div class="finalize-container">
-  <header class="finalize-header">
-    <h1>Finalize Participants</h1>
-    <div class="header-actions">
-      <button
-        type="button"
-        class="undo-btn"
-        (click)="undo()"
-        [disabled]="!tournamentStore.canUndo()"
-      >
-        Undo
-      </button>
-      <button
-        type="button"
-        class="reset-btn"
-        (click)="resetEdits()"
-        [disabled]="!tournamentStore.hasEdits()"
-      >
-        Reset
-      </button>
-      <button type="button" class="back-btn" (click)="goBackToOrganize()">
-        ← Back to Organize
-      </button>
-      <button type="button" class="export-btn" (click)="exportCsv()">Export CSV</button>
-    </div>
-  </header>
+  <app-phase-header title="Finalize Participants" backTo="organize" (back)="goBackToOrganize()">
+    <button type="button" class="undo-btn" (click)="undo()" [disabled]="!tournamentStore.canUndo()">
+      Undo
+    </button>
+    <button
+      type="button"
+      class="reset-btn"
+      (click)="resetEdits()"
+      [disabled]="!tournamentStore.hasEdits()"
+    >
+      Reset
+    </button>
+    <button type="button" class="export-btn" (click)="exportCsv()">Export CSV</button>
+  </app-phase-header>
 
   <div class="finalize-layout">
     <!-- Teams manager -->

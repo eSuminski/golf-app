@@ -7,37 +7,6 @@
   margin: 0 auto;
 }
 
-.finalize-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.finalize-header h1 {
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-.header-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.back-btn {
-  padding: 8px 12px;
-  background: #e2e8f0;
-  color: #1e293b;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.back-btn:hover {
-  background: #cbd5e1;
-}
-
 .undo-btn,
 .reset-btn {
   padding: 8px 12px;

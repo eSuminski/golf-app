@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { PhaseHeader } from '../core/components/phase-header/phase-header';
 import { TournamentStore } from '../core/services/tournament.store';
 import { Participant } from '../core/models/participant.model';
 
@@ -34,7 +35,7 @@ const SKIP_WARNINGS_KEY = 'golf-app.skip-export-warnings';
 @Component({
   selector: 'app-finalize',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PhaseHeader],
   templateUrl: './finalize.html',
   styleUrl: './finalize.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
