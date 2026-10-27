@@ -1,8 +1,5 @@
 <div class="organize-container">
-  <header class="organize-header">
-    <h1>Organize Participants</h1>
-    <button type="button" class="back-btn" (click)="goBackToUpload()">← Back to Upload</button>
-  </header>
+  <app-phase-header title="Organize Participants" backTo="upload" (back)="goBackToUpload()" />
 
   <div class="organize-layout">
     <div class="canvas-column">

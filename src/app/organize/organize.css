@@ -3,32 +3,7 @@
   flex-direction: column;
   gap: 16px;
   height: 100%;
-}
-
-.organize-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.organize-header h1 {
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-.back-btn {
-  padding: 8px 12px;
-  background: #e2e8f0;
-  color: #1e293b;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.back-btn:hover {
-  background: #cbd5e1;
+  padding: 1.5rem;
 }
 
 .organize-layout {
