@@ -1,11 +1,16 @@
 .upload-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+}
+
+/* Body takes the remaining space below the header and centers the card. */
+.upload-body {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  padding: 2rem;
-  text-align: center;
 }
 
 .upload-box {
@@ -23,12 +28,5 @@
 .file-hint {
   font-size: 0.875rem;
   color: #64748b;
-}
-
-h2 {
-  margin-bottom: 0.5rem;
-}
-
-p {
-  color: #64748b;
+  margin: 0;
 }
