@@ -1,5 +1,10 @@
 <div class="finalize-container">
-  <app-phase-header title="Finalize Participants" backTo="organize" (back)="goBackToOrganize()">
+  <app-phase-header
+    title="Finalize Participants"
+    subtitle="Click names to edit · drag ⠿ to reorder · use teams to group"
+    backTo="organize"
+    (back)="goBackToOrganize()"
+  >
     <button type="button" class="undo-btn" (click)="undo()" [disabled]="!tournamentStore.canUndo()">
       Undo
     </button>
@@ -13,6 +18,28 @@
     </button>
     <button type="button" class="export-btn" (click)="exportCsv()">Export CSV</button>
   </app-phase-header>
+
+  <app-instructions-panel>
+    <ol>
+      <li>
+        <strong>Fix names</strong> — click into a name field to correct typos; changes save on blur
+        or Enter.
+      </li>
+      <li>
+        <strong>Rearrange order</strong> — drag the ⠿ handle to reorder rows; this is the CSV export
+        order.
+      </li>
+      <li>
+        <strong>Group into teams</strong> (optional) — add a team on the left, assign players via
+        the dropdown.
+      </li>
+      <li>
+        <strong>Undo / Reset / Export</strong> — Undo reverses the last change; Reset returns to how
+        it looked on arrival; then Export CSV.
+      </li>
+    </ol>
+    <p class="undo-note">Undo covers every change — name edits, reorders, and team assignments.</p>
+  </app-instructions-panel>
 
   <div class="finalize-layout">
     <!-- Teams manager -->
