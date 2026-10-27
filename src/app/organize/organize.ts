@@ -1,4 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { DocumentCanvasComponent } from '../core/components/document-canvas/document-canvas.component';
 import { Preview } from '../preview/preview';
 import { TournamentStore } from '../core/services/tournament.store';
@@ -13,4 +14,9 @@ import { TournamentStore } from '../core/services/tournament.store';
 })
 export class Organize {
   protected readonly tournamentStore = inject(TournamentStore);
+  private router = inject(Router);
+
+  protected goBackToUpload() {
+    this.router.navigate(['/upload']);
+  }
 }
