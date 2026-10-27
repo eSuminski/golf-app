@@ -1,0 +1,18 @@
+<section class="instructions-panel">
+  <button
+    type="button"
+    class="instructions-toggle"
+    (click)="toggle()"
+    [attr.aria-expanded]="show()"
+    aria-controls="instructions-body"
+  >
+    <span>{{ title() }}</span>
+    <span class="toggle-hint">{{ show() ? 'Hide' : 'Show' }}</span>
+  </button>
+
+  @if (show()) {
+    <div id="instructions-body" class="instructions-body">
+      <ng-content></ng-content>
+    </div>
+  }
+</section>
