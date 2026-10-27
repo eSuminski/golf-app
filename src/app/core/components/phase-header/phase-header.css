@@ -1,0 +1,51 @@
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Equal-width side zones keep the center title truly centered regardless of
+   how wide the back button or the right-side actions are. */
+.header-left,
+.header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  justify-content: flex-start;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.header-center {
+  text-align: center;
+}
+
+.header-center h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.back-btn {
+  padding: 8px 12px;
+  background: #e2e8f0;
+  color: #1e293b;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #cbd5e1;
+}

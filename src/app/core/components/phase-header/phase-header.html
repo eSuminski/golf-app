@@ -1,0 +1,18 @@
+<header class="phase-header">
+  <div class="header-left">
+    @if (backTo()) {
+      <button type="button" class="back-btn" (click)="back.emit()">← {{ backLabel() }}</button>
+    }
+  </div>
+
+  <div class="header-center">
+    <h1>{{ title() }}</h1>
+    @if (subtitle()) {
+      <p class="subtitle">{{ subtitle() }}</p>
+    }
+  </div>
+
+  <div class="header-right">
+    <ng-content></ng-content>
+  </div>
+</header>

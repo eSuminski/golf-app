@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { FileParserService } from '../core/services/file-parser.service';
 import { TournamentStore } from '../core/services/tournament.store';
 import { Router } from '@angular/router';
+import { PhaseHeader } from '../core/components/phase-header/phase-header';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, PhaseHeader],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
