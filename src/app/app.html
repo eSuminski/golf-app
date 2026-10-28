@@ -4,11 +4,15 @@
   </mat-sidenav>
   <mat-sidenav-content class="content-with-header">
     <header class="app-header">
-      <button mat-icon-button (click)="toggleSidenav()">
-        <mat-icon>menu</mat-icon>
-      </button>
+      @if (showSidenavToggle()) {
+        <button mat-icon-button (click)="toggleSidenav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
       <h1 class="app-title">{{ title() }}</h1>
-      <div class="header-spacer"></div>
+      @if (showSidenavToggle()) {
+        <div class="header-spacer"></div>
+      }
     </header>
     <main class="main-content">
       <router-outlet></router-outlet>

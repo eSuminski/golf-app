@@ -18,6 +18,8 @@ export class App {
   protected readonly title = signal('golf-app');
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
+  protected readonly showSidenavToggle = signal(false); // hidden for now; enable for mobile
+
   constructor() {
     effect(() => {
       const theme = this.themeService.theme();
