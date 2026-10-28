@@ -9,18 +9,21 @@
   width: 100%;
   flex: 1;
   min-height: 0;
-  overflow: auto;
+  overflow: hidden;
   background: #f5f5f5;
   padding: 20px;
   display: flex;
   justify-content: center;
 }
 
+/* The white "page" is the scroll container: it fills the grey area and stays
+   fixed while only the text inside it scrolls. */
 .document-content {
   background: white;
   width: 100%;
   max-width: 800px;
-  min-height: 100%;
+  height: 100%;
+  overflow: auto;
   padding: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
