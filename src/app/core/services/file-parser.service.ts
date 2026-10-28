@@ -5,8 +5,9 @@ import * as pdfjsLib from 'pdfjs-dist';
 
 // pdfjs runs text extraction in a web worker. The worker file is copied into
 // public/ (served at the app root) because the Vite `?url` import only works in
-// the dev server, not the production esbuild bundler.
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+// the dev server, not the production esbuild bundler. Relative path (no leading
+// slash) so it resolves under the base href (e.g. /golf-app/) on GitHub Pages.
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.mjs';
 
 @Injectable({
   providedIn: 'root',
