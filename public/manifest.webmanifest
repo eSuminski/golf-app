@@ -1,7 +1,10 @@
 {
-  "name": "golf-app",
-  "short_name": "golf-app",
+  "name": "GolfApp",
+  "short_name": "GolfApp",
+  "description": "Organize golf tournament participants into teams and export to CSV.",
   "display": "standalone",
+  "theme_color": "#1e3a8a",
+  "background_color": "#f8fafc",
   "scope": "./",
   "start_url": "./",
   "icons": [
