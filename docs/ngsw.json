@@ -1,0 +1,85 @@
+{
+  "configVersion": 1,
+  "timestamp": 1793223569690,
+  "index": "/golf-app/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/golf-app/favicon.ico",
+        "/golf-app/fonts/fonts.css",
+        "/golf-app/index.html",
+        "/golf-app/main-CXTCJX2J.js",
+        "/golf-app/manifest.webmanifest",
+        "/golf-app/pdf.worker.min.mjs",
+        "/golf-app/styles-5HP34CCV.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/golf-app/fonts/material-icons.woff2",
+        "/golf-app/fonts/roboto-latin.woff2",
+        "/golf-app/icons/icon-128x128.png",
+        "/golf-app/icons/icon-144x144.png",
+        "/golf-app/icons/icon-152x152.png",
+        "/golf-app/icons/icon-192x192.png",
+        "/golf-app/icons/icon-384x384.png",
+        "/golf-app/icons/icon-512x512.png",
+        "/golf-app/icons/icon-72x72.png",
+        "/golf-app/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/golf-app/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/golf-app/fonts/fonts.css": "e00309a621db8d37ec5fb0811ad92c412d720b5a",
+    "/golf-app/fonts/material-icons.woff2": "0bc0c675480d94ec7e8609dda6227f88c5d08d2c",
+    "/golf-app/fonts/roboto-latin.woff2": "41ca6b7e4818eb81531d8006ff7ddd971c640879",
+    "/golf-app/icons/icon-128x128.png": "e1fc1179486087a0612803c83c64df708506fb9f",
+    "/golf-app/icons/icon-144x144.png": "825bede2d87b1834a5e3853f572d8d6513a88605",
+    "/golf-app/icons/icon-152x152.png": "a7a4bce998770534f22599e0632e10f0f9b0d6a2",
+    "/golf-app/icons/icon-192x192.png": "4ee152209eab8f0379d10784f639dae8b5ac0ff7",
+    "/golf-app/icons/icon-384x384.png": "bf9968a54e34f78e16ed7d9d85903ce6c7a2f8a6",
+    "/golf-app/icons/icon-512x512.png": "30628c20aa661a778771c3ad85e32ec6dcbafdcf",
+    "/golf-app/icons/icon-72x72.png": "7929d8eb8c8375aeac07fe40a760dcfe2421db62",
+    "/golf-app/icons/icon-96x96.png": "ecc7b5e52acf4f5474511bff848ede31f5b92abe",
+    "/golf-app/index.html": "ad439f2ecfdbebd43ffb350099ba5b35d1e38a17",
+    "/golf-app/main-CXTCJX2J.js": "7ff24d5c683a8759ed8e562fe0a347ae9dda3e44",
+    "/golf-app/manifest.webmanifest": "ec28d8e2053a918ddccfa28749b6df28770a0492",
+    "/golf-app/pdf.worker.min.mjs": "25f3cb0c4e318c0d3e934de510c0083444edf3d0",
+    "/golf-app/styles-5HP34CCV.css": "281b1213afdf693bcee15229f4566a1ec23467c9"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
